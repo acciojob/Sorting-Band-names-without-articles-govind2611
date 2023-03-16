@@ -1,24 +1,32 @@
-const bandNames = ["The Beatles", "Led Zeppelin", "Aerosmith", "Nirvana", "Queen", "The Who", "Anthrax"];
+// Input array of band names
+let bandNames = ["The Beatles", "Rolling Stones", "Led Zeppelin", "Pink Floyd", "The Who", "The Doors"];
 
-// Define a regular expression pattern to match any of the excluded articles
-const excludedArticles = /^(?:a|an|the)\s+/i;
+// Function to remove articles from band names
+function removeArticle(bandName) {
+  // List of articles to remove
+  let articles = ["a", "an", "the"];
+  // Split band name into words
+  let words = bandName.split(" ");
+  // Check if first word is an article
+  if (articles.includes(words[0].toLowerCase())) {
+    // Remove the article
+    words.shift();
+  }
+  // Join the remaining words and return the modified band name
+  return words.join(" ");
+}
 
-// Sort the band names in lexicographic order, excluding any articles
-const sortedBandNames = bandNames.sort((a, b) => {
-  // Remove any excluded articles from the beginning of each band name
-  const aCleaned = a.replace(excludedArticles, '');
-  const bCleaned = b.replace(excludedArticles, '');
-  
-  // Compare the cleaned band names in lexicographic order
-  return aCleaned.localeCompare(bCleaned);
+// Sort the band names in lexicographic order excluding articles
+bandNames.sort(function(a, b) {
+  return removeArticle(a).localeCompare(removeArticle(b));
 });
 
-// Get the UL element with ID 'band'
-const bandList = document.getElementById('band');
+// Get the ul element with id 'band'
+let ulElement = document.getElementById("band");
 
-// Create an LI element for each band name, and add it to the UL element
-sortedBandNames.forEach((bandName) => {
-  const li = document.createElement('li');
-  li.textContent = bandName;
-  bandList.appendChild(li);
-});
+// Loop through the sorted band names and add them as li elements to the ul element
+for (let i = 0; i < bandNames.length; i++) {
+  let liElement = document.createElement("li");
+  liElement.textContent = bandNames[i];
+  ulElement.appendChild(liElement);
+}
